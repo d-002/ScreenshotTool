@@ -4,7 +4,17 @@ Take and store screenshots of the game's screen, an entire room or chapter.
 
 > [!WARNING]  
 > This mod generates a lot of lag when exporting, you should consider
-> temporarily disabling LagPauser.
+> temporarily disabling LagPauser in its mod options.
+
+## Gallery
+
+The first screen of 1C without foreground nor background
+![The first screen of 1C without foreground nor background](
+https://raw.githubusercontent/d-002/ScreenshotTool/images/1c.png)
+
+The entire Strawberry Jam Grandmaster lobby as a merged room scan (downscaled)
+![The entire Strawberry Jam Grandmaster lobby as a merged room scan](
+https://raw.githubusercontent/d-002/ScreenshotTool/images/gm.png)
 
 ## Exported files
 
@@ -45,9 +55,12 @@ file with the following information:
 For example, this file was generated when scanning the second room of 1C in
 vanilla Celeste.
 
-A sample room merge script (merge.py) can be found in the code as to better
+A sample room merge script (merge.py) can be found in the code to better
 understand what is meant by merging room screenshots.
 Simply place it in a room's export directory then run it with Python.
+
+Keep in mind some image viewers (like your browser) might crash when trying to
+display images of very large rooms (like Farewell Farewell).
 
 ## Additional room/chapter scan features
 
@@ -69,3 +82,28 @@ To circumvent that, when scanning a room with transparent background enabled,
 two screenshots are taken at a time, with differently colored backgrounds.
 They are then compared to infer transparency.
 This means the render might not be 100% accurate.
+
+For now, the game is captured as-is, this means UI elements like the timer
+remain visible in screenshots.
+You are therefore currently advised to turn this off when scanning entire rooms.
+
+## Mods
+
+Mods should be supported, but since they are free to code whatever they want
+some features of ScreenshotTool might not work properly.
+
+For example, while taking the Strawberry Jam lobby image I noticed they added
+decorative bubbles in the water, that are coded differently from other entities:
+when enabling ScreenshotTool's Time freeze, their animation was not halted,
+introducinng jitteriness in the merged image.
+
+I will **not** be explicitely making other mods' features compatible, since it
+would require more effort than I am willing to give to please all requests, read
+and interface with the code of other mods (that is usually not designed for
+this) and keep up with the updates and breaking changes in the code of such
+mods.
+
+If you believe a feature is missing or broken, you are however welcome to
+opening an issue.
+
+Happy screenshotting!
