@@ -91,7 +91,10 @@ public static class RoomsScanner
         // wait for the animation to play out
         int i = 30;
         while (i-- != 0)
+        {
+            player.Speed = Vector2.Zero;
             yield return null;
+        }
 
         // wait for the new player to spawn
         IsTransitioning = false;
@@ -171,7 +174,7 @@ public static class RoomsScanner
                 {
                     yield return null;
                     player.Position = selfPos;
-                    player.Speed.Y = 0;
+                    player.Speed = Vector2.Zero;
                     level.Camera.position = camPos;
                 }
 

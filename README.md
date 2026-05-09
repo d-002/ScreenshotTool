@@ -69,7 +69,7 @@ It is also possible to remove the foreground effects to avoid parallax issues
 when merging, make the background transparent, or freeze time.
 
 **Freezing time can lead to unexpected behavior** as things like unloaded
-lightning or spinners may update incorrectly.
+lightning, spinners, cutscene triggers may update incorrectly.
 This can also happen when the time is not frozen, which is why an option is
 available to wait some time in between screenshots and allow the game to catch
 up.
@@ -109,4 +109,3 @@ Happy screenshotting!
 ## Known bugs / backlog
 
 - Crash at the end of 5A with the big eye
-- Weird paused state in freeze time mode in rooms with cutscenes (e.g. 7A start)

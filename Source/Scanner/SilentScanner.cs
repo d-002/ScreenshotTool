@@ -101,7 +101,7 @@ public static class SilentScanner
         RoomsScanner.RunScanCoroutine(self);
     }
 
-    public static void StopScan()
+    private static void StopScan()
     {
         RoomsScanner.RoomQueue.Clear();
         RoomsScanner.IsScanning = false;
@@ -185,12 +185,6 @@ public static class SilentScanner
             orig(self);
     }
 
-    private static void AscendManagerUpdate(On.Celeste.AscendManager.orig_Update orig, AscendManager self)
-    {
-        if (!RoomsScanner.IsScanning)
-            orig(self);
-    }
-
     private static void RisingLavaUpdate(On.Celeste.RisingLava.orig_Update orig, RisingLava self)
     {
         if (!RoomsScanner.IsScanning)
@@ -201,6 +195,18 @@ public static class SilentScanner
     {
         if (!RoomsScanner.IsScanning)
             orig(self);
+    }
+
+    private static void AscendManagerUpdate(On.Celeste.AscendManager.orig_Update orig, AscendManager self)
+    {
+        if (!RoomsScanner.IsScanning)
+            orig(self);
+    }
+
+    private static void EventTriggerEnter(On.Celeste.EventTrigger.orig_OnEnter orig, EventTrigger self, Player player)
+    {
+        if (!RoomsScanner.IsScanning)
+            orig(self, player);
     }
 
     private static void OnLevelReload(On.Celeste.Level.orig_Reload orig, Level self)
@@ -227,9 +233,12 @@ public static class SilentScanner
         On.Celeste.Puffer.Update += PufferUpdateHook;
         On.Celeste.BadelineOldsite.Update += BadelineUpdateHook;
         On.Celeste.FlingBird.Update += BirdUpdateHook;
-        On.Celeste.AscendManager.Update += AscendManagerUpdate;
         On.Celeste.RisingLava.Update += RisingLavaUpdate;
         On.Celeste.SandwichLava.Update += SandwichLavaUpdate;
+        
+        // same, special cases of triggers
+        On.Celeste.AscendManager.Update += AscendManagerUpdate;
+        On.Celeste.EventTrigger.OnEnter += EventTriggerEnter;
         
         // prevent broken state when exiting early
         On.Celeste.Level.Reload += OnLevelReload;
@@ -244,11 +253,13 @@ public static class SilentScanner
         On.Celeste.Puffer.Update -= PufferUpdateHook;
         On.Celeste.BadelineOldsite.Update -= BadelineUpdateHook;
         On.Celeste.FlingBird.Update -= BirdUpdateHook;
-        On.Celeste.AscendManager.Update -= AscendManagerUpdate;
         On.Celeste.RisingLava.Update -= RisingLavaUpdate;
         On.Celeste.SandwichLava.Update -= SandwichLavaUpdate;
         
+        On.Celeste.AscendManager.Update -= AscendManagerUpdate;
+        
         On.Celeste.Level.Reload -= OnLevelReload;
         Everest.Events.Level.OnExit -= OnLevelExit;
+        On.Celeste.EventTrigger.OnEnter -= EventTriggerEnter;
     }
 }
