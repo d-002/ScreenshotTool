@@ -72,31 +72,43 @@ public static class RoomsScanner
         level.OnEndOfFrame += () =>
         {
             player.Position = spawnPoint;
+            player.Speed = Vector2.Zero;
             level.TransitionTo(nextRoom, Vector2.Zero);
         };
 
         // wait for the room transition
         while (Engine.Scene is Level currentLevel && currentLevel.Session.Level != roomName)
+        {
+            // make sure to keep the player in the right position to avoid wind effects or falling into another room
+            player.Position = spawnPoint;
+            player.Speed = Vector2.Zero;
             yield return null;
+        }
 
         // wait for the next room to stabilize
-        while (Engine.Scene is not Level)
-            yield return null;
-
         level = Engine.Scene as Level;
+        while (level is null || level.Transitioning)
+        {
+            level = Engine.Scene as Level;
+            yield return null;
+        }
 
-        while ((player = level?.Tracker.GetEntity<Player>()) == null)
+        // wait for the new player to spawn
+        while ((player = level.Tracker.GetEntity<Player>()) == null)
             yield return null;
 
+        // turn this on early to avoid dying to the worst feature in this game: camera-dependant death planes
+        SaveData.Instance.Assists.Invincible = true;
+        
         // wait for the animation to play out
         int i = 30;
         while (i-- != 0)
         {
             player.Speed = Vector2.Zero;
+            player.Position = spawnPoint;
             yield return null;
         }
 
-        // wait for the new player to spawn
         IsTransitioning = false;
     }
 
@@ -116,8 +128,17 @@ public static class RoomsScanner
                 yield return ChangeRoom(level, player, roomName);
                 if (!_isRealRoom)
                     continue; // if just e.g. a filler room, skip to the next one
-            }
 
+                level = Engine.Scene as Level;
+                player = level?.Tracker.GetEntity<Player>();
+
+                if (player == null)
+                {
+                    Logger.Error("ScreenshotTool", $"Prevented crash, could not scan room {roomName}");
+                    continue;
+                }
+            }
+        
             SilentScanner.BeforeScan(player);
             Rectangle bounds = level.Bounds;
 

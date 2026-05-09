@@ -117,11 +117,9 @@ public static class SilentScanner
         List<LevelData> allRooms = self.level.Session.MapData.Levels;
 
         foreach (LevelData room in allRooms)
-        {
-            Logger.Info("ScreenshotTool", $"Found room: {room.Name}");
             RoomsScanner.RoomQueue.Enqueue(room.Name);
-        }
 
+        Logger.Info("ScreenshotTool", $"Found {RoomsScanner.RoomQueue.Count} rooms");
         RoomsScanner.RunScanCoroutine(self);
     }
 
@@ -132,7 +130,7 @@ public static class SilentScanner
 
     private static void UpdateWhitelist(On.Celeste.Level.orig_Update orig, Level self)
     {
-        if (!ScreenshotToolModule.Settings.FreezeTime || !RoomsScanner.IsScanning || !RoomsScanner.IsTransitioning)
+        if (!ScreenshotToolModule.Settings.FreezeTime || !RoomsScanner.IsScanning || RoomsScanner.IsTransitioning)
         {
             orig(self);
             return;
@@ -174,6 +172,12 @@ public static class SilentScanner
     }
 
     private static void BadelineUpdateHook(On.Celeste.BadelineOldsite.orig_Update orig, BadelineOldsite self)
+    {
+        if (!RoomsScanner.IsScanning)
+            orig(self);
+    }
+
+    private static void BadelineBoostUpdateHook(On.Celeste.BadelineBoost.orig_Update orig, BadelineBoost self)
     {
         if (!RoomsScanner.IsScanning)
             orig(self);
@@ -232,6 +236,7 @@ public static class SilentScanner
         On.Celeste.PlayerCollider.Check += PlayerColliderHook;
         On.Celeste.Puffer.Update += PufferUpdateHook;
         On.Celeste.BadelineOldsite.Update += BadelineUpdateHook;
+        On.Celeste.BadelineBoost.Update += BadelineBoostUpdateHook;
         On.Celeste.FlingBird.Update += BirdUpdateHook;
         On.Celeste.RisingLava.Update += RisingLavaUpdate;
         On.Celeste.SandwichLava.Update += SandwichLavaUpdate;
@@ -252,6 +257,7 @@ public static class SilentScanner
         On.Celeste.PlayerCollider.Check -= PlayerColliderHook;
         On.Celeste.Puffer.Update -= PufferUpdateHook;
         On.Celeste.BadelineOldsite.Update -= BadelineUpdateHook;
+        On.Celeste.BadelineBoost.Update -= BadelineBoostUpdateHook;
         On.Celeste.FlingBird.Update -= BirdUpdateHook;
         On.Celeste.RisingLava.Update -= RisingLavaUpdate;
         On.Celeste.SandwichLava.Update -= SandwichLavaUpdate;
