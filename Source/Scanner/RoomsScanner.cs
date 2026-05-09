@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Xna.Framework;
 using Monocle;
 
@@ -131,6 +130,7 @@ public static class RoomsScanner
 
             int index = 0;
             bool end = false;
+            Vector2 prevPos = Vector2.Zero;
             while (!end && IsScanning)
             {
                 // prepare position for the next screenshot and end detection (after the bottom right corner was reached)
@@ -155,6 +155,10 @@ public static class RoomsScanner
                     relPos.Y = maxY;
                 else
                     end = false;
+
+                if (index != 0 && (int)relPos.X == (int)prevPos.X && (int)relPos.Y == (int)prevPos.Y)
+                    continue;
+                prevPos = relPos;
 
                 // set up player and camera enforced positions
                 Vector2 selfPos = bounds.Location.ToVector2() + relPos;
