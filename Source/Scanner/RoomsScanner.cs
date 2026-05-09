@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Monocle;
 
@@ -13,6 +14,9 @@ public static class RoomsScanner
     public static readonly Queue<string> RoomQueue = new();
 
     private const int TileSize = 8;
+
+    // whether the room the player just got teleported in is a real room or just a filler
+    private static bool _isRealRoom;
 
     public static bool IsScanning;
     public static bool IsTransitioning;
@@ -51,7 +55,17 @@ public static class RoomsScanner
         level.Session.Level = roomName;
         level.Session.FirstLevel = false;
         level.Session.StartedFromBeginning = false;
-        level.Session.RespawnPoint = level.Session.GetSpawnPoint(player.Position);
+        try
+        {
+            level.Session.RespawnPoint = level.Session.GetSpawnPoint(player.Position);
+            _isRealRoom = true;
+        }
+        catch
+        {
+            _isRealRoom = false;
+            yield break;
+        }
+
         LevelData nextRoom = level.Session.MapData.Get(roomName);
         Vector2 spawnPoint = nextRoom.Spawns[0];
 
@@ -96,7 +110,11 @@ public static class RoomsScanner
             string roomName = RoomQueue.Dequeue();
 
             if (level.Session.Level != roomName)
+            {
                 yield return ChangeRoom(level, player, roomName);
+                if (!_isRealRoom)
+                    continue; // if just e.g. a filler room, skip to the next one
+            }
 
             SilentScanner.BeforeScan(player);
             Rectangle bounds = level.Bounds;
