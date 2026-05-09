@@ -9,12 +9,10 @@ Take and store screenshots of the game's screen, an entire room or chapter.
 ## Gallery
 
 The first screen of 1C without foreground nor background
-![The first screen of 1C without foreground nor background](
-https://raw.githubusercontent/d-002/ScreenshotTool/images/1c.png)
+![The first screen of 1C without foreground nor background](https://raw.githubusercontent.com/d-002/ScreenshotTool/refs/heads/main/images/1c.png)
 
 The entire Strawberry Jam Grandmaster lobby as a merged room scan (downscaled)
-![The entire Strawberry Jam Grandmaster lobby as a merged room scan](
-https://raw.githubusercontent/d-002/ScreenshotTool/images/gm.png)
+![The entire Strawberry Jam Grandmaster lobby as a merged room scan](https://raw.githubusercontent.com/d-002/ScreenshotTool/refs/heads/main/images/gm.png)
 
 ## Exported files
 
