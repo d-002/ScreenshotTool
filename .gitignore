@@ -1,0 +1,8 @@
+# Rider
+bin
+obj
+ScreenshotTool.sln.DotSettings.user
+
+# vim
+~*
+*.scp
