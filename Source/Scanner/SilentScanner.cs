@@ -25,6 +25,7 @@ public static class SilentScanner
         self.Collidable = false;
         self.Collider = new Hitbox(0, 0);
         SaveData.Instance.Assists.Invincible = true;
+        self.StateMachine.State = Player.StDummy;
         self.level.CameraLockMode = Level.CameraLockModes.None;
 
         if (ScreenshotToolModule.Settings.FreezeTime)
@@ -35,7 +36,7 @@ public static class SilentScanner
             ];
             self.level.Add(_timeStopEntity);
         }
-
+        
         if (ScreenshotToolModule.Settings.RemoveBackground)
         {
             _background = self.level.Background;
@@ -78,6 +79,7 @@ public static class SilentScanner
         self.Collider = _prevCollider;
         self.Position = _prevPosition;
         SaveData.Instance.Assists.Invincible = false;
+        self.StateMachine.State = Player.StNormal;
 
         if (ScreenshotToolModule.Settings.FreezeTime)
             self.level.Remove(_timeStopEntity);
@@ -183,6 +185,24 @@ public static class SilentScanner
             orig(self);
     }
 
+    private static void AscendManagerUpdate(On.Celeste.AscendManager.orig_Update orig, AscendManager self)
+    {
+        if (!RoomsScanner.IsScanning)
+            orig(self);
+    }
+
+    private static void RisingLavaUpdate(On.Celeste.RisingLava.orig_Update orig, RisingLava self)
+    {
+        if (!RoomsScanner.IsScanning)
+            orig(self);
+    }
+
+    private static void SandwichLavaUpdate(On.Celeste.SandwichLava.orig_Update orig, SandwichLava self)
+    {
+        if (!RoomsScanner.IsScanning)
+            orig(self);
+    }
+
     public static void Load()
     {
         // to freeze time when needed
@@ -193,6 +213,10 @@ public static class SilentScanner
         On.Celeste.Puffer.Update += PufferUpdateHook;
         On.Celeste.BadelineOldsite.Update += BadelineUpdateHook;
         On.Celeste.FlingBird.Update += BirdUpdateHook;
+        
+        On.Celeste.AscendManager.Update += AscendManagerUpdate;
+        On.Celeste.RisingLava.Update += RisingLavaUpdate;
+        On.Celeste.SandwichLava.Update += SandwichLavaUpdate;
     }
 
     public static void Unload()
@@ -203,5 +227,9 @@ public static class SilentScanner
         On.Celeste.Puffer.Update -= PufferUpdateHook;
         On.Celeste.BadelineOldsite.Update -= BadelineUpdateHook;
         On.Celeste.FlingBird.Update -= BirdUpdateHook;
+        
+        On.Celeste.AscendManager.Update -= AscendManagerUpdate;
+        On.Celeste.RisingLava.Update -= RisingLavaUpdate;
+        On.Celeste.SandwichLava.Update -= SandwichLavaUpdate;
     }
 }
