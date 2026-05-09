@@ -203,6 +203,20 @@ public static class SilentScanner
             orig(self);
     }
 
+    private static void OnLevelReload(On.Celeste.Level.orig_Reload orig, Level self)
+    {
+        StopScan();
+        orig(self);
+    }
+
+    private static void OnLevelExit(Level level, LevelExit levelExit, LevelExit.Mode mode, Session session, HiresSnow hiresSnow)
+    {
+        if (mode == LevelExit.Mode.Restart)
+            return;
+        
+        StopScan();
+    }
+
     public static void Load()
     {
         // to freeze time when needed
@@ -213,10 +227,13 @@ public static class SilentScanner
         On.Celeste.Puffer.Update += PufferUpdateHook;
         On.Celeste.BadelineOldsite.Update += BadelineUpdateHook;
         On.Celeste.FlingBird.Update += BirdUpdateHook;
-        
         On.Celeste.AscendManager.Update += AscendManagerUpdate;
         On.Celeste.RisingLava.Update += RisingLavaUpdate;
         On.Celeste.SandwichLava.Update += SandwichLavaUpdate;
+        
+        // prevent broken state when exiting early
+        On.Celeste.Level.Reload += OnLevelReload;
+        Everest.Events.Level.OnExit += OnLevelExit;
     }
 
     public static void Unload()
@@ -227,9 +244,11 @@ public static class SilentScanner
         On.Celeste.Puffer.Update -= PufferUpdateHook;
         On.Celeste.BadelineOldsite.Update -= BadelineUpdateHook;
         On.Celeste.FlingBird.Update -= BirdUpdateHook;
-        
         On.Celeste.AscendManager.Update -= AscendManagerUpdate;
         On.Celeste.RisingLava.Update -= RisingLavaUpdate;
         On.Celeste.SandwichLava.Update -= SandwichLavaUpdate;
+        
+        On.Celeste.Level.Reload -= OnLevelReload;
+        Everest.Events.Level.OnExit -= OnLevelExit;
     }
 }

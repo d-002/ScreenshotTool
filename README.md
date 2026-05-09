@@ -108,7 +108,5 @@ Happy screenshotting!
 
 ## Known bugs / backlog
 
-- Need a trigger to force stop scanning, it sometimes gets stuck
-
 - Crash at the end of 5A with the big eye
 - Weird paused state in freeze time mode in rooms with cutscenes (e.g. 7A start)
