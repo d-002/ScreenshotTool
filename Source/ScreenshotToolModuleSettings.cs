@@ -35,11 +35,11 @@ public class ScreenshotToolModuleSettings : EverestModuleSettings
 
     [SettingSubText("Take a single screenshot of the entire screen")]
     [DefaultButtonBinding(button: Buttons.LeftStick, key: Keys.P)]
-    public ButtonBinding RecordScreen { get; set; } // TODO implement
+    public ButtonBinding RecordScreen { get; set; }
     
     [SettingSubText("Take multiple screenshots of the current room in a way to cover it all")]
     public ButtonBinding RecordRoom { get; set; }
     
     [SettingSubText("Go to every room in the chapter sequentially, recording each of them fully")]
-    public ButtonBinding RecordChapter { get; set; } // TODO implement
+    public ButtonBinding RecordChapter { get; set; }
 }
