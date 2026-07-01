@@ -4,15 +4,17 @@ Take and store screenshots of the game's screen, an entire room or chapter.
 
 > [!WARNING]  
 > This mod generates a lot of lag when exporting, you should consider
-> temporarily disabling LagPauser in its mod options.
+> temporarily disabling [LagPauser](https://gamebanana.com/mods/591485) in its
+> mod options if you use it.
 
 ## Gallery
 
-The first screen of 1C without foreground nor background
-![The first screen of 1C without foreground nor background](https://raw.githubusercontent.com/d-002/ScreenshotTool/refs/heads/main/images/1c.png)
+The first screen of 1C, with a transparent background
+![The first screen of 1C with a transparent background](https://raw.githubusercontent.com/d-002/ScreenshotTool/refs/heads/main/images/1c.png)
 
-The entire Strawberry Jam Grandmaster lobby as a merged room scan (downscaled)
-![The entire Strawberry Jam Grandmaster lobby as a merged room scan](https://raw.githubusercontent.com/d-002/ScreenshotTool/refs/heads/main/images/gm.png)
+The entire Strawberry Jam Grandmaster lobby as a merged room scan (later
+downscaled so it takes less disk space)
+![The entire Strawberry Jam Grandmaster lobby](https://raw.githubusercontent.com/d-002/ScreenshotTool/refs/heads/main/images/gm.png)
 
 ## Exported files
 
