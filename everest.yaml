@@ -1,6 +1,6 @@
 - Name: ScreenshotTool
-  Version: 1.0.1
+  Version: 1.0.2
   DLL: bin/ScreenshotTool.dll
   Dependencies:
     - Name: Everest
-      Version: 1.6286.0
+      Version: 1.6397.0

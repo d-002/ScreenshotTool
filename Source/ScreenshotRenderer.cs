@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Monocle;
@@ -20,7 +21,7 @@ public static class ScreenshotRenderer
 
     private static Color[] _blackScreenshot;
     private static Color[] _whiteScreenshot;
-    
+
     public static bool SavingFinished { get; private set; }
 
     public static void AllowSaving(int index, Vector2? relPos, bool isStandalone)
@@ -80,7 +81,7 @@ public static class ScreenshotRenderer
 
         string fileName;
         if (_isStandalone)
-            fileName = $"{DateTime.Now.ToString("F").Replace(' ', '_')}.png";
+            fileName = $"{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.png";
         else
         {
             Vector2 relPos = _relPos ?? new Vector2();
