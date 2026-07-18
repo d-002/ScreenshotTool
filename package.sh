@@ -1,3 +1,5 @@
 #!/bin/sh
 
-zip ScreenshotTool.zip bin/ScreenshotTool.dll everest.yaml
+TARGET=ScreenshotTool.zip
+rm -f "$TARGET"
+zip "$TARGET" bin/ScreenshotTool.dll bin/ScreenshotTool.pdb everest.yaml
