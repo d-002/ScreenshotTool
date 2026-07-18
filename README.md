@@ -107,7 +107,3 @@ If you believe a feature is missing or broken, you are however welcome to
 opening an issue.
 
 Happy screenshotting!
-
-## Known bugs / backlog
-
-- Crash at the end of 5A with the big eye
