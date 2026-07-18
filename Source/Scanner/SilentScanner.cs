@@ -130,7 +130,10 @@ public static class SilentScanner
 
     private static void UpdateWhitelist(On.Celeste.Level.orig_Update orig, Level self)
     {
-        if (!ScreenshotToolModule.Settings.FreezeTime || !RoomsScanner.IsScanning || RoomsScanner.IsTransitioning)
+        // only freeze time when the mod is actually running, we want to freeze time, and we are not in a room transition
+        // we allow time to pass briefly while transitioning because the motivation for the time freeze is to avoid artifacts
+        // when merging multiple captures inside the same room, which this edge case does not affect
+        if (!RoomsScanner.IsScanning || !ScreenshotToolModule.Settings.FreezeTime || RoomsScanner.IsTransitioning)
         {
             orig(self);
             return;
@@ -138,6 +141,8 @@ public static class SilentScanner
 
         try
         {
+            RoomsScanner.UpdateScannerHost();
+
             Type[] whitelisted =
             [
                 typeof(Player), typeof(LightningRenderer),

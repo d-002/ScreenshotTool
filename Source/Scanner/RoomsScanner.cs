@@ -239,6 +239,11 @@ public static class RoomsScanner
             player.level.Add(_scannerHost);
         }
 
-        _scannerHost.Add(new Coroutine(RoomsScanner.ScanRoom(player)));
+        _scannerHost.Add(new Coroutine(ScanRoom(player)));
+    }
+
+    public static void UpdateScannerHost()
+    {
+        _scannerHost?.Update();
     }
 }
