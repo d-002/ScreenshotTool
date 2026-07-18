@@ -2,6 +2,8 @@
 
 Take and store screenshots of the game's screen, an entire room or chapter.
 
+GameBanana page: https://gamebanana.com/mods/675848
+
 > [!WARNING]  
 > This mod generates a lot of lag when exporting, you should consider
 > temporarily disabling [LagPauser](https://gamebanana.com/mods/591485) in its
