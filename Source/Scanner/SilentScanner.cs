@@ -13,8 +13,8 @@ public static class SilentScanner
     private static Vector2 _prevPosition;
     private static Collider _prevCollider;
     private static Entity _timeStopEntity;
-    private static BackdropRenderer _background;
-    private static BackdropRenderer _foreground;
+    private static BackdropRenderer _prevBackground;
+    private static BackdropRenderer _prevForeground;
 
     public static void BeforeScan(Player self)
     {
@@ -36,10 +36,10 @@ public static class SilentScanner
             ];
             self.level.Add(_timeStopEntity);
         }
-        
+
         if (ScreenshotToolModule.Settings.RemoveBackground)
         {
-            _background = self.level.Background;
+            _prevBackground = self.level.Background;
             self.level.Background = new BackdropRenderer
             {
                 Visible = false
@@ -48,7 +48,7 @@ public static class SilentScanner
 
         if (ScreenshotToolModule.Settings.RemoveForeground)
         {
-            _foreground = self.level.Foreground;
+            _prevForeground = self.level.Foreground;
             self.level.Foreground = new BackdropRenderer
             {
                 Visible = false
@@ -85,9 +85,9 @@ public static class SilentScanner
             self.level.Remove(_timeStopEntity);
 
         if (ScreenshotToolModule.Settings.RemoveBackground)
-            self.level.Background = _background;
+            self.level.Background = _prevBackground;
         if (ScreenshotToolModule.Settings.RemoveForeground)
-            self.level.Foreground = _foreground;
+            self.level.Foreground = _prevForeground;
     }
 
     public static void StartScanRoom(Player self)
@@ -163,6 +163,22 @@ public static class SilentScanner
                 $"Error in UpdateWhitelist, while scanning with time frozen: {e.Message}");
         }
     }
+    
+    private static void UpdateDisableDarkness(On.Celeste.Level.orig_Update orig, Level self)
+    {
+        orig(self);
+
+        if (ScreenshotToolModule.Settings.DisableDarkness)
+        {
+            // early finish animation to skip changing darkness between rooms
+            self.Session.DarkRoomAlpha = self.BaseLightingAlpha;
+        }
+        else if (self.Session.DarkRoomAlpha == self.BaseLightingAlpha)
+        {
+            // restore darkness value after animation to avoid side effects
+            self.Session.DarkRoomAlpha = 0.75f;
+        }
+    }
 
     private static bool PlayerColliderHook(On.Celeste.PlayerCollider.orig_Check orig, PlayerCollider self,
         Player player)
@@ -217,6 +233,12 @@ public static class SilentScanner
         if (!RoomsScanner.IsScanning)
             orig(self, player);
     }
+    
+    private static void TentaclesUpdate(On.Celeste.Tentacles.orig_Render orig, Tentacles self, Scene scene)
+    {
+        if (!RoomsScanner.IsScanning || !ScreenshotToolModule.Settings.DisableTentacles)
+            orig(self, scene);
+    }
 
     private static void OnLevelReload(On.Celeste.Level.orig_Reload orig, Level self)
     {
@@ -228,7 +250,7 @@ public static class SilentScanner
     {
         if (mode == LevelExit.Mode.Restart)
             return;
-        
+
         StopScan();
     }
 
@@ -236,6 +258,7 @@ public static class SilentScanner
     {
         // to freeze time when needed
         On.Celeste.Level.Update += UpdateWhitelist;
+        On.Celeste.Level.Update += UpdateDisableDarkness;
 
         // to make the player really invisible from things
         On.Celeste.PlayerCollider.Check += PlayerColliderHook;
@@ -245,11 +268,14 @@ public static class SilentScanner
         On.Celeste.FlingBird.Update += BirdUpdateHook;
         On.Celeste.RisingLava.Update += RisingLavaUpdate;
         On.Celeste.SandwichLava.Update += SandwichLavaUpdate;
-        
+
         // same, special cases of triggers
         On.Celeste.AscendManager.Update += AscendManagerUpdate;
         On.Celeste.EventTrigger.OnEnter += EventTriggerEnter;
-        
+
+        // for individual disable toggles
+        On.Celeste.Tentacles.Render += TentaclesUpdate;
+
         // prevent broken state when exiting early
         On.Celeste.Level.Reload += OnLevelReload;
         Everest.Events.Level.OnExit += OnLevelExit;
@@ -258,6 +284,7 @@ public static class SilentScanner
     public static void Unload()
     {
         On.Celeste.Level.Update -= UpdateWhitelist;
+        On.Celeste.Level.Update -= UpdateDisableDarkness;
 
         On.Celeste.PlayerCollider.Check -= PlayerColliderHook;
         On.Celeste.Puffer.Update -= PufferUpdateHook;
@@ -266,11 +293,13 @@ public static class SilentScanner
         On.Celeste.FlingBird.Update -= BirdUpdateHook;
         On.Celeste.RisingLava.Update -= RisingLavaUpdate;
         On.Celeste.SandwichLava.Update -= SandwichLavaUpdate;
-        
+
         On.Celeste.AscendManager.Update -= AscendManagerUpdate;
-        
+        On.Celeste.EventTrigger.OnEnter -= EventTriggerEnter;
+
+        On.Celeste.Tentacles.Render -= TentaclesUpdate;
+
         On.Celeste.Level.Reload -= OnLevelReload;
         Everest.Events.Level.OnExit -= OnLevelExit;
-        On.Celeste.EventTrigger.OnEnter -= EventTriggerEnter;
     }
 }

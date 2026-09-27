@@ -19,7 +19,7 @@ public class ScreenshotToolModuleSettings : EverestModuleSettings
     public bool RemoveForeground { get; set; } = false;
     [SettingSubText("Whether to disabled the darkness effect")]
     public bool DisableDarkness { get; set; } = false;
-    [SettingSubText("Whether to disabled Badeline tentacles like in 6A")]
+    [SettingSubText("Whether to disable Badeline tentacles like in 6A")]
     public bool DisableTentacles { get; set; } = false;
 
     [SettingSubMenu]
