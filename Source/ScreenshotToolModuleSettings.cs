@@ -17,6 +17,10 @@ public class ScreenshotToolModuleSettings : EverestModuleSettings
     public bool RemoveBackground { get; set; } = false;
     [SettingSubText("Whether to try to remove foreground effects whose parallax can mess things up")]
     public bool RemoveForeground { get; set; } = false;
+    [SettingSubText("Whether to disabled the darkness effect")]
+    public bool DisableDarkness { get; set; } = false;
+    [SettingSubText("Whether to disable Badeline tentacles like in 6A")]
+    public bool DisableTentacles { get; set; } = false;
 
     [SettingSubMenu]
     public class AdvancedSettingsSubMenu
@@ -36,10 +40,10 @@ public class ScreenshotToolModuleSettings : EverestModuleSettings
     [SettingSubText("Take a single screenshot of the entire screen")]
     [DefaultButtonBinding(button: Buttons.LeftStick, key: Keys.P)]
     public ButtonBinding RecordScreen { get; set; }
-    
+
     [SettingSubText("Take multiple screenshots of the current room in a way to cover it all")]
     public ButtonBinding RecordRoom { get; set; }
-    
+
     [SettingSubText("Go to every room in the chapter sequentially, recording each of them fully")]
     public ButtonBinding RecordChapter { get; set; }
 }

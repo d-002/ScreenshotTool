@@ -1,5 +1,3 @@
 namespace Celeste.Mod.ScreenshotTool;
 
-public class ScreenshotToolModuleSaveData : EverestModuleSaveData {
-
-}
+public class ScreenshotToolModuleSaveData : EverestModuleSaveData {}
