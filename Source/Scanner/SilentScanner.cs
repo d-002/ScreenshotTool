@@ -234,10 +234,10 @@ public static class SilentScanner
             orig(self, player);
     }
     
-    private static void TentaclesUpdate(On.Celeste.Tentacles.orig_Render orig, Tentacles self, Scene scene)
+    private static void ReflectionTentaclesUpdate(On.Celeste.ReflectionTentacles.orig_Render orig, ReflectionTentacles self)
     {
         if (!RoomsScanner.IsScanning || !ScreenshotToolModule.Settings.DisableTentacles)
-            orig(self, scene);
+            orig(self);
     }
 
     private static void OnLevelReload(On.Celeste.Level.orig_Reload orig, Level self)
@@ -274,7 +274,7 @@ public static class SilentScanner
         On.Celeste.EventTrigger.OnEnter += EventTriggerEnter;
 
         // for individual disable toggles
-        On.Celeste.Tentacles.Render += TentaclesUpdate;
+        On.Celeste.ReflectionTentacles.Render += ReflectionTentaclesUpdate;
 
         // prevent broken state when exiting early
         On.Celeste.Level.Reload += OnLevelReload;
@@ -297,7 +297,7 @@ public static class SilentScanner
         On.Celeste.AscendManager.Update -= AscendManagerUpdate;
         On.Celeste.EventTrigger.OnEnter -= EventTriggerEnter;
 
-        On.Celeste.Tentacles.Render -= TentaclesUpdate;
+        On.Celeste.ReflectionTentacles.Render -= ReflectionTentaclesUpdate;
 
         On.Celeste.Level.Reload -= OnLevelReload;
         Everest.Events.Level.OnExit -= OnLevelExit;
