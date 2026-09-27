@@ -9,6 +9,10 @@ GameBanana page: https://gamebanana.com/mods/675848
 > temporarily disabling [LagPauser](https://gamebanana.com/mods/591485) in its
 > mod options if you use it.
 
+> [!WARNING]  
+> As the room / chapter scan features potentially move the camera quickly and
+> repetitively, I think a seizure warning is appropriate.
+
 ## Gallery
 
 The first screen of 1C, with a transparent background
